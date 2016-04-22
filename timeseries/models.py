@@ -1,6 +1,6 @@
 from .utils import utcnow, get_reverse_relation, get_interval
 from django.db import models
-from django.db.models import Prefetch, Max, Q
+from django.db.models import Prefetch, Max, Q, F
 
 
 class TimeSeriesQuerySet(models.QuerySet):
@@ -37,7 +37,7 @@ class TimeSeriesQuerySet(models.QuerySet):
             prefetch = Prefetch(
                 related_name,
                 queryset=RelatedModel.objects.filter(
-                    # **{field_name + '__in': self}
+                    **{field_name + '__in': self}
                 ).order_by(field_name, '-created').distinct(field_name),
                 to_attr=attr_name
             )
@@ -125,9 +125,34 @@ class TimeSeriesModel(models.Model):
     """
     """
 
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
 
     class Meta:
         abstract = True
         ordering = ('-created', )
         get_latest_by = 'created'
+
+
+def LatestQ(related_name, **kwargs):
+    parsed_kwargs = {
+        related_name + "__created": F(related_name + '_last_updated')
+    }
+    for key, value in kwargs.iteritems():
+        parsed_kwargs[related_name + '__' + key] = value
+    return Q(**parsed_kwargs)
+
+
+def q_factory(related_name, q_func=LatestQ):
+    """
+        Usage:
+
+        LatestRawDataQ = q_factory('rawdata')
+
+        Ad.objects.annotate_last_updated('rawdata').filter(
+            LatestRawDataQ(views__gt=1000)
+        )
+
+    """
+    def wrapper(**kwargs):
+        return q_func(related_name, **kwargs)
+    return wrapper

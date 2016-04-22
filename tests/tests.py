@@ -3,6 +3,7 @@ from .models import Ad, RawAdData, MonthlyAdReport
 from datetime import timedelta
 from django.test import TestCase
 from timeseries.utils import utcnow
+from timeseries.models import LatestQ
 
 import django
 import mock
@@ -78,6 +79,30 @@ class TimeSeriesTests(TestCase):
             Ad.objects.update_reports()
             self.assertEqual(MonthlyAdReport.objects.count(), 20)
 
+    def test_latest_q_function(self):
+        just_before = utcnow()
+        for _ in range(10):
+            diff = RawAdData.TIMESERIES_INTERVAL + timedelta(seconds=0.1)
+            with time_machine(just_before + diff):
+                Ad.objects.update_rawdata()
+
+        standout_ad = Ad.objects.first()
+        standout_data = standout_ad.rawdata.latest()
+        standout_data.views = 1000000
+        standout_data.save()
+
+        self.assertEqual(
+            Ad.objects.filter(rawdata__views__lt=1000).distinct('id').count(),
+            10
+        )
+
+        self.assertEqual(
+            Ad.objects.annotate_last_updated('rawdata').filter(
+                LatestQ('rawdata', views__lt=1000)
+            ).count(),
+            9
+        )
+
     def test_prefetch_latest_filter(self):
         just_before = utcnow()
         for _ in range(10):
@@ -147,7 +172,9 @@ class TimeSeriesTests(TestCase):
 
     def test_prefetch_lastest_get(self):
         Ad.objects.update_rawdata()
-        ad = Ad.objects.prefetch_latest('rawdata', 'monthlyreports').get(id=1)
+        ad = Ad.objects.prefetch_latest('rawdata', 'monthlyreports').get(
+            id=Ad.objects.first().id
+        )
         self.assertTrue(hasattr(ad, 'latest_rawdata'))
         self.assertTrue(hasattr(ad, 'latest_monthlyreports'))
 
