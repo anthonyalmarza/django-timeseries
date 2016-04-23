@@ -92,9 +92,7 @@ update and maintain timeseries data. These methods include:
 * update_timeseries
 
 
-### update_timeseries
-
-`update_timeseries`
+### `update_timeseries`
 
 Inputs: `related_name`, `collector`, optional `force`
 
@@ -112,9 +110,7 @@ N.B. Only instances that have outdated data will be updated unless
 explicitly forced using the "force" keyword argument.
 
 
-### filter_outdated
-
-`filter_outdated`
+### `filter_outdated`
 
 Inputs: `*related_names`
 
@@ -124,9 +120,7 @@ Returns a queryset that will yield the model instances that have
 "outdated" data associated to reverse related model as given by
 the specified related_name.
 
-### last_updated
-
-`last_updated`
+### `last_updated`
 
 Inputs: `*related_names`
 
@@ -138,16 +132,14 @@ given by the reverse relation's related_name.
 Usage:
 
 ```python
-    my_instance = MyModel.objects.last_updated('mydata').first()
-    # assuming there's data related to my_instance
-    print my_instance.mydata_last_updated
-    # this will print the repr of the latest associated data
-    # instance
+    ad = Ad.objects.last_updated('rawdata').first()
+    # assuming there's data related to ad
+    print ad.rawdata_last_updated
+    # this will print the timestamp of when the associated data was
+    # last updated
 ```
 
-### prefetch_latest
-
-`prefetch_latest`
+### `prefetch_latest`
 
 Inputs: `*related_names`
 
@@ -160,6 +152,8 @@ Usage:
 ```python
     ad = Ad.objects.prefetch_latest('rawdata', 'monthlyreports').first()
     print ad.latest_rawaddata, ad.latest_monthlyreports
+    # this will print the reprs of the latest associated data
+    # instances
 ```
 
 

@@ -108,11 +108,11 @@ class TimeSeriesQuerySet(models.QuerySet):
             given by the reverse relation's related_name.
 
             Usage:
-                my_instance = MyModel.objects.last_updated('mydata').first()
-                # assuming there's data related to my_instance
-                print my_instance.mydata_last_updated
-                # this will print the repr of the latest associated data
-                # instance
+                ad = Ad.objects.last_updated('rawdata').first()
+                # assuming there's data related to ad
+                print ad.rawdata_last_updated
+                # prints the timestamp associated to when the ad's raw data was
+                # last updated
         """
         return self.annotate(
             **{
