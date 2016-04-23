@@ -4,4 +4,4 @@ python:
 env:
   - TEST_DB_USER=postgres
 install: pip install tox
-script: tox
+script: tox -r
