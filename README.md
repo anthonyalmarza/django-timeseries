@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/anthonyalmarza/timeseries.svg?branch=master)](https://travis-ci.org/anthonyalmarza/timeseries)
 
+[![Coverage Status](https://coveralls.io/repos/github/anthonyalmarza/timeseries/badge.svg?branch=master)](https://coveralls.io/github/anthonyalmarza/timeseries?branch=master)
+
 `timeseries` is a set django application tools designed to facilitate the
 collation and maintenance of timeseries data.
 
