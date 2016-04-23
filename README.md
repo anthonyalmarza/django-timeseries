@@ -166,3 +166,23 @@ Usage:
 ## Other Utilities
 
 ### `LatestQ`
+
+`timeseries.utils`
+
+Inputs: `related_name`, `**kwargs`
+
+Returns: django.db.models.Q instance
+
+Constructs a django.db.models.Q instance that allows queries to be
+executed against the latest associated reverse relation.
+
+N.B. this method is designed to be used in conjunction with
+timeseries.utils.TimeSeriesQuerySet.last_updated.
+
+Usage:
+
+```python
+Ad.objects.last_updated('rawdata').filter(
+    LatestQ('rawdata', views__gt=1000)
+)
+```
