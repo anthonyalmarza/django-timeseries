@@ -6,7 +6,7 @@ env:
 - TEST_DB_USER=postgres DJANGO_VERSION_LOW=1.9 DJANGO_VERSION_HIGH=1.10
 install:
 - pip install .
-- pip install Django>=$DJANGO_VERSION_LOW,<$DJANGO_VERSION_HIGH
+- pip install -q Django>=$DJANGO_VERSION_LOW,<$DJANGO_VERSION_HIGH
 - pip install coveralls
 script:
 - python manage.py test --noinput
