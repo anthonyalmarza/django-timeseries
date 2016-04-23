@@ -2,15 +2,14 @@ from .models import Ad, RawAdData, MonthlyAdReport
 
 from datetime import timedelta
 from django.test import TestCase
-from timeseries.utils import utcnow
-from timeseries.models import LatestQ
+from timeseries.utils import utcnow, LatestQ
 
 import django
 import mock
 
 
 def time_machine(_time):
-    return mock.patch('timeseries.models.utcnow', return_value=_time)
+    return mock.patch('timeseries.utils.utcnow', return_value=_time)
 
 
 class TimeSeriesTests(TestCase):
@@ -97,7 +96,7 @@ class TimeSeriesTests(TestCase):
         )
 
         self.assertEqual(
-            Ad.objects.annotate_last_updated('rawdata').filter(
+            Ad.objects.last_updated('rawdata').filter(
                 LatestQ('rawdata', views__lt=1000)
             ).count(),
             9

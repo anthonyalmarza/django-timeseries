@@ -7,7 +7,7 @@ collation and maintenance of timeseries data.
 
 ## Requirements
 
-Django v1.8+ are supported for projects running on PostgreSQL.
+Django versions 1.8+ are supported for projects running on PostgreSQL.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Django v1.8+ are supported for projects running on PostgreSQL.
 ```python
 from datetime import timedelta
 from django.db import models
-from timeseries.models import TimeSeriesModel, TimeSeriesManager
+from timeseries.utils import TimeSeriesModel, TimeSeriesManager
 
 
 class Ad(models.Model):
@@ -77,3 +77,92 @@ def report_data_collector(queryset):
 >>> print ad.latest_rawaddata, ad.latest_monthlyreports
 
 ```
+
+
+## TimeSeries QuerySet Methods
+
+`timeseries.utils.TimeSeriesQuerySet`
+
+Adds 4 main methods to the Django QuerySet API that can be used to
+update and maintain timeseries data. These methods include:
+
+* prefetch_latest
+* filter_outdated
+* last_updated
+* update_timeseries
+
+
+### update_timeseries
+
+`update_timeseries`
+
+Inputs: `related_name`, `collector`, optional `force`
+
+Returns: list of instatiated related models.
+
+Updates the queryset's related model table
+(as given by related_name) using a provider "collector" callable.
+
+"collector" must take a queryset of the referenced models as its
+only argument. It must also return an iterable of dictionaries
+that can be used to construct and save instances of the related
+model.
+
+N.B. Only instances that have outdated data will be updated unless
+explicitly forced using the "force" keyword argument.
+
+
+### filter_outdated
+
+`filter_outdated`
+
+Inputs: `*related_names`
+
+Returns: queryset
+
+Returns a queryset that will yield the model instances that have
+"outdated" data associated to reverse related model as given by
+the specified related_name.
+
+### last_updated
+
+`last_updated`
+
+Inputs: `*related_names`
+
+Returns: queryset
+
+Annotates the created timestamp of the latest related instance as
+given by the reverse relation's related_name.
+
+Usage:
+
+```python
+    my_instance = MyModel.objects.last_updated('mydata').first()
+    # assuming there's data related to my_instance
+    print my_instance.mydata_last_updated
+    # this will print the repr of the latest associated data
+    # instance
+```
+
+### prefetch_latest
+
+`prefetch_latest`
+
+Inputs: `*related_names`
+
+Returns: queryset
+
+Exposes the latest associated reverse relation.
+
+Usage:
+
+```python
+    ad = Ad.objects.prefetch_latest('rawdata', 'monthlyreports').first()
+    print ad.latest_rawaddata, ad.latest_monthlyreports
+```
+
+
+## Other Utilities
+
+### `LatestQ`

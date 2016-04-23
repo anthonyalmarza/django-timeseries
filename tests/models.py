@@ -1,6 +1,6 @@
 from datetime import timedelta
 from django.db import models
-from timeseries.models import TimeSeriesModel, TimeSeriesQuerySet
+from timeseries.utils import TimeSeriesModel, TimeSeriesQuerySet
 
 
 class AdQuerySet(TimeSeriesQuerySet):
