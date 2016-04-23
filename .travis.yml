@@ -2,11 +2,11 @@ language: python
 python:
 - '2.7'
 env:
-- TEST_DB_USER=postgres DJANGO_VERSION_LOW=1.8 DJANGO_VERSION_HIGH=1.9
-- TEST_DB_USER=postgres DJANGO_VERSION_LOW=1.9 DJANGO_VERSION_HIGH=1.10
+- TEST_DB_USER=postgres DJANGO_VERSION=1.8.12
+- TEST_DB_USER=postgres DJANGO_VERSION=1.9.5
 install:
 - pip install .
-- pip install -q Django>=$DJANGO_VERSION_LOW,<$DJANGO_VERSION_HIGH
+- pip install -q Django==$DJANGO_VERSION
 - pip install coveralls
 script:
 - python manage.py test --noinput
