@@ -20,6 +20,6 @@ setup(
     ],
     keywords=['timeseries', 'django', 'data', 'latest'],
     install_requires=['django', 'psycopg2'],
-    extras_require={'dev': ['ipdb', 'mock']},
+    extras_require={'dev': ['ipdb', 'mock', 'tox', 'coverage']},
     include_package_data=True
 )

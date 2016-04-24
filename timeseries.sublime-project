@@ -2,9 +2,12 @@
     "build_systems":
     [
         {
-            "cmd": "$project_path/venv/bin/tox",
-            "name": "Tox",
-            "target": "virtualenv_exec"
+            "shell_cmd": "source $project_path/venv/bin/activate; tox",
+            "name": "Tox"
+        },
+        {
+            "shell_cmd": "source $project_path/venv/bin/activate; coverage run --source=timeseries manage.py test; coverage report",
+            "name": "Coverage"
         }
     ],
     "folders":
