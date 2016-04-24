@@ -78,6 +78,22 @@ class TimeSeriesTests(TestCase):
             Ad.objects.update_reports()
             self.assertEqual(MonthlyAdReport.objects.count(), 20)
 
+    def test_update_timeseries_force(self):
+        Ad.objects.update_reports()
+        self.assertEqual(MonthlyAdReport.objects.count(), 10)
+
+        Ad.objects.update_reports()
+        self.assertEqual(MonthlyAdReport.objects.count(), 10)
+
+        Ad.objects.update_reports(force=True)
+        self.assertEqual(MonthlyAdReport.objects.count(), 20)
+
+        Ad.objects.update_reports()
+        self.assertEqual(MonthlyAdReport.objects.count(), 20)
+
+        Ad.objects.update_reports(force=True)
+        self.assertEqual(MonthlyAdReport.objects.count(), 30)
+
     def test_latest_q_function(self):
         just_before = utcnow()
         for _ in range(10):

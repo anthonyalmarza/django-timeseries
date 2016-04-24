@@ -5,11 +5,15 @@ from timeseries.utils import TimeSeriesModel, TimeSeriesQuerySet
 
 class AdQuerySet(TimeSeriesQuerySet):
 
-    def update_rawdata(self):
-        return self.update_timeseries('rawdata', ad_data_collector)
+    def update_rawdata(self, force=False):
+        return self.update_timeseries(
+            'rawdata', ad_data_collector, force=force
+        )
 
-    def update_reports(self):
-        return self.update_timeseries('monthlyreports', report_data_collector)
+    def update_reports(self, force=False):
+        return self.update_timeseries(
+            'monthlyreports', report_data_collector, force=force
+        )
 
 
 class AdManager(models.Manager.from_queryset(AdQuerySet)):

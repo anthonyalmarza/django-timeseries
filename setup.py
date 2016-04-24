@@ -9,8 +9,8 @@ setup(
     packages=find_packages(exclude=["test*", ]),
     url="https://github.com/anthonyalmarza/timeseries",
     description=(
-        "`timeseries` is a set django application tools designed to facilitate"
-        " the collation and maintenance of timeseries data."
+        "`timeseries` is a set of django application tools designed to "
+        "facilitate the collation and maintenance of timeseries data."
     ),
     classifiers=[
         'Intended Audience :: Developers',
