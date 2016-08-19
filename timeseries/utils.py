@@ -99,7 +99,8 @@ class TimeSeriesQuerySet(models.QuerySet):
                 yield res
         else:
             for res in super_iter:
-                self.parse_latest(res)
+                if isinstance(res, self.model):
+                    self.parse_latest(res)
                 yield res
 
     def last_updated(self, related_name):
