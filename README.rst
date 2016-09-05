@@ -1,4 +1,4 @@
-TimeSeries
+TimeSeries <span class="octicon octicon-info"></span>
 ==========
 
 |Build Status|
