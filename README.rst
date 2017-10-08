@@ -188,7 +188,8 @@ Usage:
         LatestQ('rawdata', views__gt=1000)
     )
 
-.. |Build Status| image:: https://travis-ci.org/anthonyalmarza/timeseries.svg?branch=master
-   :target: https://travis-ci.org/anthonyalmarza/timeseries
-.. |Coverage Status| image:: https://coveralls.io/repos/github/anthonyalmarza/timeseries/badge.svg?branch=master
-   :target: https://coveralls.io/github/anthonyalmarza/timeseries?branch=master
+.. |Build Status| image:: https://circleci.com/gh/anthonyalmarza/django-timeseries.svg?style=svg
+    :target: https://circleci.com/gh/anthonyalmarza/django-timeseries
+.. |Coverage Status| image:: https://codecov.io/gh/anthonyalmarza/django-timeseries/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/anthonyalmarza/django-timeseries
+
