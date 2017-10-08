@@ -1,0 +1,6 @@
+[run]
+source = ./timeseries
+omit = */tests/*.py
+
+[report]
+omit = */tests/*.py
