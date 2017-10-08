@@ -5,6 +5,8 @@ machine:
 test:
   override:
     - tox
+  post:
+    - pip install codecov && codecov
 
 deployment:
   pypi:
